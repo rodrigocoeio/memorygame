@@ -1,0 +1,8 @@
+html, body, #root {
+    height: 100%;
+    font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    padding: 0px;
+    margin: 0px;
+    background: gray;
+    color: white;
+}
