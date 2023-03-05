@@ -1,11 +1,81 @@
-import './App.css'
+import "./App.css";
+import Welcome from "./components/Welcome/Welcome";
+import Game from "./components/Game/Game";
+import { useEffect, useState } from "react";
+import loadCardsSet from "./utils/loadCardsSet";
+
+type DIFFICULTY = "EASY" | "NORMAL" | "HARD";
 
 function App() {
+  const [started, setStarted] = useState(false);
+  const [difficulty, setDifficulty] = useState<DIFFICULTY>("NORMAL");
+  const [categories, setCategories] = useState<any[]>([]);
+  const [category, setCategory] = useState("");
+  const [cardsSet, setCardsSet] = useState([]);
+
+  useEffect(() => {
+    const loadCategories = async () => {
+      const fetchJson = await fetch("/categories.json");
+      const categoriesJson = await fetchJson.json();
+
+      let categories: any[] = [];
+
+      for (const i in categoriesJson) {
+        categories.push(categoriesJson[i]);
+      }
+
+      setCategories(categories);
+    };
+
+    loadCategories();
+  }, []);
+
+  const startGameHandler = () => {
+    const categoryObj: any = categories.find((cat) => cat.name === category);
+
+    if (categoryObj) {
+      const cardsNumber: any = { EASY: 9, NORMAL: 15, HARD: 25 };
+      const cardsSet: any = loadCardsSet(categoryObj, cardsNumber[difficulty]);
+
+      setCardsSet(cardsSet);
+      setStarted(true);
+
+      console.log("Game Started: " + difficulty + " " + category);
+    }
+  };
+
+  const quitGameHandler = () => {
+    setStarted(false);
+  };
+
+  const selectDifficultyHandler = (difficulty: DIFFICULTY) => {
+    setDifficulty(difficulty);
+  };
+
+  const selectCategoryHandler = (category: string) => {
+    setCategory(category);
+  };
+
+  if (!started)
+    return (
+      <Welcome
+        difficulty={difficulty}
+        categories={categories}
+        category={category}
+        onStartGame={startGameHandler}
+        onSelectCategory={selectCategoryHandler}
+        onSelectDifficulty={selectDifficultyHandler}
+      />
+    );
+
   return (
-    <div className="App">
-      
-    </div>
-  )
+    <Game
+      cardsSet={cardsSet}
+      difficulty={difficulty}
+      onStartGame={startGameHandler}
+      onQuitGame={quitGameHandler}
+    />
+  );
 }
 
-export default App
+export default App;

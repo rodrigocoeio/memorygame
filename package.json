@@ -4,8 +4,9 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "tsc && vite build",
+    "dev": "node readcards.cjs && vite",
+    "build": "node readcards.cjs && tsc && vite build",
+    "readcards": "node readcards.cjs",
     "preview": "vite preview"
   },
   "dependencies": {
