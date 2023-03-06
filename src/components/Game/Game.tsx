@@ -111,7 +111,11 @@ const Game: FC<GameProps> = (props: GameProps) => {
   };
 
   let coverStyles = styles.Card + " " + styles.Cover;
-  let cardStyles = styles.Card + " " + styles.Clickable;
+  let cardStyles = styles.Card;
+
+  if (!cardOpened && !cardMatch) {
+    cardStyles += " " + styles.Clickable;
+  }
 
   if (!cardMatch) {
     coverStyles += " " + styles.Clickable + " " + styles.Selectable;
@@ -136,7 +140,7 @@ const Game: FC<GameProps> = (props: GameProps) => {
             onClick={() => {
               setFinished(false);
             }}
-            style={{ opacity: 0.6 }}
+            style={{ opacity: 0.5 }}
           >
             No!
           </button>
@@ -144,7 +148,7 @@ const Game: FC<GameProps> = (props: GameProps) => {
       )}
       <div
         className={styles.GameBoard + " " + styles[`GameBoard${difficulty}`]}
-        style={{ opacity: finished ? 0.3 : 1 }}
+        style={{ opacity: finished ? 0.1 : 1 }}
       >
         {cardsSet.map((card, index) => {
           const indexer = index + 1;
