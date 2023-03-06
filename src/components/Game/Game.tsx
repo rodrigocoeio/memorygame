@@ -48,11 +48,6 @@ const Game: FC<GameProps> = (props: GameProps) => {
   const [cardShake, setCardShake] = useState(false);
   const [finished, setFinished] = useState(false);
 
-  const playAudioHandler = (card: Card) => {
-    if (cardOpened && cardMatch) return false;
-    playCard(card);
-  };
-
   const newGameHandler = () => {
     setCardOpened(0);
     setCardMatch(0);
@@ -111,6 +106,7 @@ const Game: FC<GameProps> = (props: GameProps) => {
 
   const playCardHandler = (e: any, card: Card) => {
     e.stopPropagation();
+    if (cardOpened && cardMatch) return false;
     playCard(card);
   };
 
@@ -170,7 +166,7 @@ const Game: FC<GameProps> = (props: GameProps) => {
                 style={{
                   backgroundImage: `url("/cards/${card.category}/${card.image}")`,
                 }}
-                onClick={() => playAudioHandler(card)}
+                onClick={(e) => playCardHandler(e, card)}
               >
                 <span>{card.name}</span>
               </div>
