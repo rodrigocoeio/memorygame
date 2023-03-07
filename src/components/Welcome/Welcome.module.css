@@ -13,7 +13,7 @@
 
 .Logo {
     font-size: 24px;
-    text-shadow: black 5px 0 0px;
+    text-shadow: gray 3px 0 0px;
     -webkit-text-stroke: 1px black;
 }
 
@@ -26,17 +26,19 @@
     margin: 0 auto;
     margin-bottom: 15px;
     cursor: pointer;
+    border: 3px solid black;
 }
 
 .Controls select:hover {
     background-color:chartreuse;
     text-shadow: white 3px 0 10px;
-    box-shadow: 3px 3px;
+    box-shadow: 3px 3px gray;
 }
 
 .StartGame {
     display: block;
     padding:20px;
+    border: 3px solid black;
     border-radius: 15px;
     font-size: 24px;
     font-family: Verdana, Geneva, Tahoma, sans-serif;
@@ -47,6 +49,11 @@
 
 .StartGame:hover {
     background-color:chartreuse;
-    text-shadow: white 3px 0 10px;
-    box-shadow: 3px 3px;
+    text-shadow: gray 3px 0 10px;
+    box-shadow: 3px 3px gray;
+}
+
+.PleaseSelect { 
+    border: 3px solid red !important;
+    box-sizing: border-box;
 }

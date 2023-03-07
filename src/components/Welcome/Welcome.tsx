@@ -7,6 +7,7 @@ type WelcomeProps = {
   difficulty: string;
   categories: any[];
   category: string;
+  pleaseSelectCategory: boolean;
   onStartGame: () => void;
   onSelectDifficulty: (difficulty: DIFFICULTY) => void;
   onSelectCategory: (category: string) => void;
@@ -43,7 +44,7 @@ const Welcome: FC<WelcomeProps> = (props: WelcomeProps) => {
             <option value="HARD">Hard</option>
           </select>
 
-          <select value={props.category} onChange={selectCategoryHandler}>
+          <select value={props.category} className={props.pleaseSelectCategory ? styles.PleaseSelect : ""} onChange={selectCategoryHandler}>
             <option value="" disabled>
               Choose a category
             </option>
