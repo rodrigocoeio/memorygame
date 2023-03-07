@@ -8,9 +8,9 @@
 
 .Finished {
     position: absolute;
-    top:0px;
-    left:0px;
-    z-index:100;
+    top: 0px;
+    left: 0px;
+    z-index: 100;
     width: 100%;
     height: 100%;
     text-align: center;
@@ -22,7 +22,7 @@
 }
 
 .Finished button {
-    font-size:24px;
+    font-size: 24px;
     padding: 10px;
     margin-top: 30px;
     margin-right: 15px;
@@ -30,6 +30,7 @@
     border-radius: 30px;
     cursor: pointer;
 }
+
 .Finished button:hover {
     background-color: greenyellow;
     box-shadow: 2px 2px black;
@@ -71,14 +72,15 @@
     border: 5px dashed #555;
     border-radius: 15px;
     display: flex;
-    align-items: center;
+    align-items: flex-end;
     justify-content: center;
     color: white;
     overflow: hidden;
     font-weight: bold;
     text-align: center;
     font-family: Verdana, Geneva, Tahoma, sans-serif;
-    cursor: not-allowed;
+    cursor: pointer;
+    border: 5px dashed rgb(0, 204, 255);
 }
 
 .Card span {
@@ -89,13 +91,35 @@
     -webkit-text-stroke: 1px black;
 }
 
+.Card.Matched {
+    border: 5px dashed greenyellow;
+    box-shadow: 3px 3px gainsboro;
+}
+
 .Cover {
+    background-size: auto 100%;
+    background-repeat: initial;
+    background-position: center;
+    border-radius: 15px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    overflow: hidden;
+    font-weight: bold;
+    text-align: center;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
     position: relative;
-    background-color: white;
     color: black;
+    border: 5px dashed black;
+    background-color: white;
+    align-items: center;
+    cursor: not-allowed;
 }
 
 .Cover span {
+    position: absolute;
+    display: block;
+    max-width: 200px;
     text-shadow: white 4px 1px 1px;
     -webkit-text-stroke: 2px black;
 }
@@ -120,24 +144,13 @@
     opacity: 1;
 }
 
-.Card.Opened {
-    cursor: pointer;
-    border: 5px dashed rgb(0, 204, 255);
-    box-shadow: 7px 7px black;
-}
-
-.Card.Matched {
-    border: 5px dashed greenyellow;
-    box-shadow: 3px 3px black;
-}
-
-.Card.Clickable:hover {
+.Clickable:hover {
     cursor: pointer;
 }
 
-.Card.Selectable:hover {
-    background-color: rgb(0, 204, 255);
-    border: 5px dashed yellow;
+.Selectable:hover {
+    background-color: greenyellow;
+    border: 5px dashed black;
 }
 
 .Controls {
@@ -166,6 +179,26 @@
     top: -10px;
     right: -25px;
     z-index: 1;
+}
+
+.NewGame:hover {
+    background-color: greenyellow;
+    color: black;
+    box-shadow: 2px 2px black;
+}
+
+.SpyButton {
+    position: relative;
+    border: none;
+    border-radius: 100px;
+    cursor: pointer;
+    right: -10px;
+    z-index: 2;
+}
+.SpyButton:not(:disabled):hover {
+    background-color: greenyellow;
+    color: black;
+    box-shadow: 2px 2px black;
 }
 
 .NewGame:hover {

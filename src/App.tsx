@@ -12,6 +12,7 @@ function App() {
   const [categories, setCategories] = useState<any[]>([]);
   const [category, setCategory] = useState("");
   const [cardsSet, setCardsSet] = useState([]);
+  const [pleaseSelectCategory, setPleaseSelectCategory] = useState(false);
 
   useEffect(() => {
     const loadCategories = async () => {
@@ -41,6 +42,8 @@ function App() {
       setStarted(true);
 
       console.log("Game Started: " + difficulty + " " + category);
+    } else {
+      setPleaseSelectCategory(true);
     }
   };
 
@@ -54,6 +57,7 @@ function App() {
 
   const selectCategoryHandler = (category: string) => {
     setCategory(category);
+    setPleaseSelectCategory(false);
   };
 
   if (!started)
@@ -62,6 +66,7 @@ function App() {
         difficulty={difficulty}
         categories={categories}
         category={category}
+        pleaseSelectCategory={pleaseSelectCategory}
         onStartGame={startGameHandler}
         onSelectCategory={selectCategoryHandler}
         onSelectDifficulty={selectDifficultyHandler}

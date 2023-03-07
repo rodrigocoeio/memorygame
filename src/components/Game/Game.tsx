@@ -46,6 +46,7 @@ const Game: FC<GameProps> = (props: GameProps) => {
   const [cardOpened, setCardOpened] = useState(0);
   const [cardMatch, setCardMatch] = useState(0);
   const [cardShake, setCardShake] = useState(false);
+  const [spyMode, setSpyMode] = useState(false);
   const [finished, setFinished] = useState(false);
 
   const newGameHandler = () => {
@@ -110,7 +111,16 @@ const Game: FC<GameProps> = (props: GameProps) => {
     playCard(card);
   };
 
-  let coverStyles = styles.Card + " " + styles.Cover;
+  const spyHandler = () => {
+    if (cardsMatched.length > 0) return setSpyMode(false);
+
+    setSpyMode(true);
+    setTimeout(() => {
+      setSpyMode(false);
+    }, 3000);
+  };
+
+  let coverStyles = styles.Cover;
   let cardStyles = styles.Card;
 
   if (!cardOpened && !cardMatch) {
@@ -155,8 +165,10 @@ const Game: FC<GameProps> = (props: GameProps) => {
           if (
             cardOpened === card.id ||
             cardMatch === card.id ||
-            cardsMatched.includes(card.name)
+            cardsMatched.includes(card.name) ||
+            spyMode
           ) {
+            // Show Card
             let currentCardStyles = cardStyles;
             if (cardOpened === card.id || cardMatch === card.id)
               currentCardStyles += " " + styles.Opened;
@@ -176,6 +188,8 @@ const Game: FC<GameProps> = (props: GameProps) => {
               </div>
             );
           }
+
+          // Show Cover
           return (
             <div
               key={`cover${indexer}`}
@@ -207,6 +221,26 @@ const Game: FC<GameProps> = (props: GameProps) => {
           <button onClick={newGameHandler} className={styles.NewGame}>
             New Game&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
           </button>
+          {cardsMatched.length === 0 && (
+            <button
+              disabled={spyMode}
+              onClick={spyHandler}
+              className={styles.SpyButton}
+              title="Spy"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="36"
+                height="36"
+                fill="currentColor"
+                className="bi bi-eye-fill"
+                viewBox="0 0 16 16"
+              >
+                <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z" />
+                <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8zm8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z" />
+              </svg>
+            </button>
+          )}
           <button
             onClick={props.onQuitGame}
             className={styles.QuitGame}
