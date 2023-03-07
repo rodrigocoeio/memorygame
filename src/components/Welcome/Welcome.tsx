@@ -31,7 +31,7 @@ const Welcome: FC<WelcomeProps> = (props: WelcomeProps) => {
       <div className={styles.Welcome}>
         <div className={styles.Logo}>
           <img src="/images/memorygame.png" />
-          <h1>The Memory Game</h1>
+          <h1>Memory Game</h1>
         </div>
 
         <div className={styles.Controls}>
