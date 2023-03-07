@@ -1,0 +1,60 @@
+.Controls {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+}
+
+.NewGame {
+    position: relative;
+    padding: 10px;
+    font-size: 16px;
+    font-weight: bold;
+    border: none;
+    border-radius: 100px;
+    cursor: pointer;
+    top: -10px;
+    right: -25px;
+    z-index: 1;
+}
+
+.NewGame:hover {
+    background-color: greenyellow;
+    color: black;
+    box-shadow: 2px 2px black;
+}
+
+.SpyButton {
+    position: relative;
+    border: none;
+    border-radius: 100px;
+    cursor: pointer;
+    right: -10px;
+    z-index: 2;
+}
+
+.SpyButton:not(:disabled):hover {
+    background-color: greenyellow;
+    color: black;
+    box-shadow: 2px 2px black;
+}
+
+.NewGame:hover {
+    background-color: greenyellow;
+    color: black;
+    box-shadow: 2px 2px black;
+}
+
+.QuitGame {
+    position: relative;
+    border: none;
+    border-radius: 100px;
+    cursor: pointer;
+    color: red;
+    z-index: 3;
+}
+
+.QuitGame:hover {
+    background-color: red;
+    color: white;
+    box-shadow: 2px 2px black;
+}

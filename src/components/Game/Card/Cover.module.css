@@ -1,0 +1,56 @@
+.Cover {
+    background-size: auto 100%;
+    background-repeat: initial;
+    background-position: center;
+    border-radius: 15px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    overflow: hidden;
+    font-weight: bold;
+    text-align: center;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    position: relative;
+    color: black;
+    border: 5px dashed black;
+    background-color: white;
+    align-items: center;
+    cursor: not-allowed;
+}
+
+.Cover span {
+    position: absolute;
+    display: block;
+    max-width: 200px;
+    text-shadow: white 4px 1px 1px;
+    -webkit-text-stroke: 2px black;
+}
+
+.Cover .Play {
+    position: absolute;
+    background: none;
+    top: 4px;
+    left: 4px;
+    z-index: 10;
+    cursor: pointer;
+    padding: 4px;
+    border: none;
+    border-radius: 50px;
+    color: black;
+    opacity: 0.1;
+}
+
+.Cover .Play:hover {
+    background-color: greenyellow;
+    box-shadow: 2px 2px black;
+    opacity: 1;
+}
+
+.Clickable:hover {
+    cursor: pointer;
+}
+
+.Selectable:hover {
+    background-color: greenyellow;
+    border: 5px dashed black;
+}

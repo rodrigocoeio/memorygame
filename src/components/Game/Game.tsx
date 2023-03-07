@@ -1,7 +1,11 @@
 import { FC, useState } from "react";
+import Controls from "./Controls/Controls";
+import Finished from "./Finished/Finished";
+import Cover from "./Card/Cover";
+import Card from "./Card/Card";
 import styles from "./Game.module.css";
 
-type Card = {
+type CardType = {
   id: number;
   name: string;
   category: string;
@@ -11,7 +15,7 @@ type Card = {
 };
 
 type GameProps = {
-  cardsSet: Card[];
+  cardsSet: CardType[];
   difficulty: "EASY" | "NORMAL" | "HARD";
   onStartGame: () => void;
   onQuitGame: () => void;
@@ -22,7 +26,7 @@ const playAudio = (path: string) => {
   audio.play();
 };
 
-const playCard = (card: Card) => {
+const playCard = (card: CardType) => {
   playAudio("/cards/" + card.category + "/" + card.audio);
 };
 
@@ -39,8 +43,7 @@ const playFinished = () => {
 };
 
 const Game: FC<GameProps> = (props: GameProps) => {
-  const cardsSet = props.cardsSet;
-  const difficulty = props.difficulty;
+  const { cardsSet, difficulty, onStartGame, onQuitGame } = props;
   const [cardsMatched, setCardsMatched] = useState<string[]>([]);
   const [cardOpenedName, setCardOpenedName] = useState("");
   const [cardOpened, setCardOpened] = useState(0);
@@ -54,10 +57,14 @@ const Game: FC<GameProps> = (props: GameProps) => {
     setCardMatch(0);
     setCardsMatched([]);
     setFinished(false);
-    props.onStartGame();
+    onStartGame();
   };
 
-  const openCardHandler = (event: any, card: Card) => {
+  const quitGameHandler = () => {
+    onQuitGame();
+  };
+
+  const openCardHandler = (event: any, card: CardType) => {
     if (cardOpened && cardMatch) return false;
 
     playCard(card);
@@ -105,61 +112,47 @@ const Game: FC<GameProps> = (props: GameProps) => {
     }
   };
 
-  const playCardHandler = (e: any, card: Card) => {
+  const playCardHandler = (e: any, card: CardType) => {
     e.stopPropagation();
     if (cardOpened && cardMatch) return false;
     playCard(card);
   };
 
   const spyHandler = () => {
-    if (cardsMatched.length > 0) return setSpyMode(false);
+    if (cardsMatched.length > 0 || cardOpened) return setSpyMode(false);
 
     setSpyMode(true);
     setTimeout(() => {
+      setCardShake(true);
+    }, 2500);
+    setTimeout(() => {
       setSpyMode(false);
+      setCardShake(false);
     }, 3000);
   };
-
-  let coverStyles = styles.Cover;
-  let cardStyles = styles.Card;
-
-  if (!cardOpened && !cardMatch) {
-    cardStyles += " " + styles.Clickable;
-  }
-
-  if (!cardMatch) {
-    coverStyles += " " + styles.Clickable + " " + styles.Selectable;
-  }
-
-  if (cardShake) {
-    cardStyles += " " + styles.Shake;
-  }
 
   return (
     <div className={styles.Wrapper}>
       {finished && (
-        <div className={styles.Finished}>
-          <img src="/images/congrats.png"></img>
-          <br />
-          Game Finished!
-          <br />
-          Wanna play more?!
-          <br />
-          <button onClick={newGameHandler}>Yes!</button>
-          <button
-            onClick={() => {
-              setFinished(false);
-            }}
-            style={{ opacity: 0.5 }}
-          >
-            No!
-          </button>
-        </div>
+        <Finished
+          onNewGameHandler={newGameHandler}
+          onClose={() => {
+            setFinished(false);
+          }}
+        />
       )}
       <div
         className={styles.GameBoard + " " + styles[`GameBoard${difficulty}`]}
         style={{ opacity: finished ? 0.1 : 1 }}
       >
+        <Controls
+          cardsMatched={cardsMatched}
+          spyMode={spyMode}
+          onNewGame={newGameHandler}
+          onSpy={spyHandler}
+          onQuitGame={quitGameHandler}
+        />
+
         {cardsSet.map((card, index) => {
           const indexer = index + 1;
           if (
@@ -168,97 +161,31 @@ const Game: FC<GameProps> = (props: GameProps) => {
             cardsMatched.includes(card.name) ||
             spyMode
           ) {
-            // Show Card
-            let currentCardStyles = cardStyles;
-            if (cardOpened === card.id || cardMatch === card.id)
-              currentCardStyles += " " + styles.Opened;
-            if (cardsMatched.includes(card.name))
-              currentCardStyles += " " + styles.Matched;
-
             return (
-              <div
-                key={`card${indexer}`}
-                className={currentCardStyles}
-                style={{
-                  backgroundImage: `url("/cards/${card.category}/${card.image}")`,
-                }}
-                onClick={(e) => playCardHandler(e, card)}
-              >
-                <span>{card.name}</span>
-              </div>
+              <Card
+                indexer={indexer}
+                card={card}
+                cardOpened={cardOpened}
+                cardMatch={cardMatch}
+                cardsMatched={cardsMatched}
+                cardShake={cardShake}
+                playCardHandler={playCardHandler}
+                openCardHandler={openCardHandler}
+              />
             );
           }
 
           // Show Cover
           return (
-            <div
-              key={`cover${indexer}`}
-              className={coverStyles}
-              onClick={(e) => openCardHandler(e, card)}
-            >
-              <span>{indexer}</span>
-              <button
-                onClick={(e) => playCardHandler(e, card)}
-                className={styles.Play}
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="24"
-                  height="24"
-                  fill="currentColor"
-                  className="bi bi-speaker-fill"
-                  viewBox="0 0 16 16"
-                >
-                  <path d="M9 4a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm-2.5 6.5a1.5 1.5 0 1 1 3 0 1.5 1.5 0 0 1-3 0z" />
-                  <path d="M4 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H4zm6 4a2 2 0 1 1-4 0 2 2 0 0 1 4 0zM8 7a3.5 3.5 0 1 1 0 7 3.5 3.5 0 0 1 0-7z" />
-                </svg>
-              </button>
-            </div>
+            <Cover
+              indexer={indexer}
+              card={card}
+              cardMatch={cardMatch}
+              playCardHandler={playCardHandler}
+              openCardHandler={openCardHandler}
+            />
           );
         })}
-
-        <div className={styles.Controls}>
-          <button onClick={newGameHandler} className={styles.NewGame}>
-            New Game&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-          </button>
-          {cardsMatched.length === 0 && (
-            <button
-              disabled={spyMode}
-              onClick={spyHandler}
-              className={styles.SpyButton}
-              title="Spy"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="36"
-                height="36"
-                fill="currentColor"
-                className="bi bi-eye-fill"
-                viewBox="0 0 16 16"
-              >
-                <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z" />
-                <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8zm8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z" />
-              </svg>
-            </button>
-          )}
-          <button
-            onClick={props.onQuitGame}
-            className={styles.QuitGame}
-            title="Quit Game"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="36"
-              height="36"
-              fill="currentColor"
-              className="bi bi-x-circle"
-              viewBox="0 0 16 16"
-            >
-              <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
-              <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z" />
-            </svg>
-          </button>
-        </div>
       </div>
     </div>
   );
