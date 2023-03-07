@@ -121,14 +121,15 @@ const Game: FC<GameProps> = (props: GameProps) => {
   const spyHandler = () => {
     if (cardsMatched.length > 0 || cardOpened) return setSpyMode(false);
 
-    setSpyMode(true);
-    setTimeout(() => {
+    if (!spyMode) {
+      setSpyMode(true);
+    } else {
       setCardShake(true);
-    }, 2500);
-    setTimeout(() => {
-      setSpyMode(false);
-      setCardShake(false);
-    }, 3000);
+      setTimeout(() => {
+        setSpyMode(false);
+        setCardShake(false);
+      }, 500);
+    }
   };
 
   return (
@@ -146,6 +147,7 @@ const Game: FC<GameProps> = (props: GameProps) => {
         style={{ opacity: finished ? 0.1 : 1 }}
       >
         <Controls
+          cardOpened={cardOpened}
           cardsMatched={cardsMatched}
           spyMode={spyMode}
           onNewGame={newGameHandler}
