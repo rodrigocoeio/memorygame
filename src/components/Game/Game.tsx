@@ -4,6 +4,7 @@ import Finished from "./Finished/Finished";
 import Cover from "./Card/Cover";
 import Card from "./Card/Card";
 import styles from "./Game.module.css";
+import playAudio from "../../utils/playAudio";
 
 type CardType = {
   id: number;
@@ -19,11 +20,6 @@ type GameProps = {
   difficulty: "EASY" | "NORMAL" | "HARD";
   onStartGame: () => void;
   onQuitGame: () => void;
-};
-
-const playAudio = (path: string) => {
-  const audio = new Audio(path);
-  audio.play();
 };
 
 const playCard = (card: CardType) => {
