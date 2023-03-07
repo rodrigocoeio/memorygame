@@ -1,4 +1,3 @@
-import { prependOnceListener } from "process";
 import { FC } from "react";
 import styles from "./Finished.module.css";
 
