@@ -1,8 +1,5 @@
 const path = require("path");
 const fs = require("fs");
-const { exit } = require("process");
-const { format } = require("path");
-const silenceMode = true;
 
 const getExtensionFromFileName = function (fileName) {
   const fileNameSplited = fileName.split(".");
@@ -80,25 +77,6 @@ const readCategories = async function (folder, callback) {
   callback(categoriesCards.categories);
 };
 
-const readObjects = async function (folder, callback) {
-  const contents = await readFolder(folder);
-  const objects = [];
-
-  contents.forEach(content => {
-    const object = getObject(content);
-    objects.push(object);
-  })
-
-  callback(objects);
-};
-
-const getObject = (content) => {
-  return {
-    name: formatCardName(content.name),
-    image: content.fileName
-  }
-};
-
 const readContents = (contents, parent) => {
   let cover = false;
   let categories = {};
@@ -135,12 +113,10 @@ const readContent = (content, parent) => {
       category.cards = folderContents.cards;
 
       return category;
-      break;
     case "file":
       const card = getCard(content, parent);
 
       return card;
-      break;
   }
 
   return false;
