@@ -1,4 +1,4 @@
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import Controls from "./Controls/Controls";
 import Finished from "./Finished/Finished";
 import Cover from "./Card/Cover";
@@ -42,15 +42,34 @@ const Game: FC<GameProps> = (props: GameProps) => {
   const { cardsSet, difficulty, onStartGame, onQuitGame } = props;
   const [cardsMatched, setCardsMatched] = useState<string[]>([]);
   const [cardOpenedName, setCardOpenedName] = useState("");
-  const [cardOpened, setCardOpened] = useState(0);
-  const [cardMatch, setCardMatch] = useState(0);
+  const [cardOpened, setCardOpened] = useState<CardType | undefined>();
+  const [cardMatch, setCardMatch] = useState<CardType | undefined>();
   const [cardShake, setCardShake] = useState(false);
   const [spyMode, setSpyMode] = useState(false);
   const [finished, setFinished] = useState(false);
 
+  // Keep playing opened card till a match card is opened
+  useEffect(() => {
+    let playInterval: any;
+
+    if (cardOpened && !cardMatch && !cardsMatched.includes(cardOpened.name)) {
+      playInterval = setInterval(() => {
+        playCard(cardOpened);
+        setCardShake(true);
+        setTimeout(() => {
+          setCardShake(false);
+        }, 500);
+      }, 3000);
+    }
+
+    return () => {
+      clearInterval(playInterval);
+    };
+  }, [cardOpened, cardMatch]);
+
   const newGameHandler = () => {
-    setCardOpened(0);
-    setCardMatch(0);
+    setCardOpened(undefined);
+    setCardMatch(undefined);
     setCardsMatched([]);
     setFinished(false);
     onStartGame();
@@ -67,13 +86,13 @@ const Game: FC<GameProps> = (props: GameProps) => {
 
     // Open Match Card
     if (cardOpened) {
-      setCardMatch(card.id);
+      setCardMatch(card);
 
       // Matched
-      if (card.name === cardOpenedName) {
+      if (card.name === cardOpened.name) {
         setCardsMatched((cardsMatched) => [card.name, ...cardsMatched]);
-        setCardOpened(0);
-        setCardMatch(0);
+        setCardOpened(undefined);
+        setCardMatch(undefined);
         playMatched();
 
         // Not Matched
@@ -83,8 +102,8 @@ const Game: FC<GameProps> = (props: GameProps) => {
         }, 2500);
 
         setTimeout(() => {
-          setCardOpened(0);
-          setCardMatch(0);
+          setCardOpened(undefined);
+          setCardMatch(undefined);
           setCardShake(false);
         }, 3000);
         playNotMatched();
@@ -93,8 +112,7 @@ const Game: FC<GameProps> = (props: GameProps) => {
 
     // Open Card
     else {
-      setCardOpened(card.id);
-      setCardOpenedName(card.name);
+      setCardOpened(card);
 
       // Open Last Card
       if (cardsMatched.length === (cardsSet.length - 1) / 2) {
@@ -154,8 +172,8 @@ const Game: FC<GameProps> = (props: GameProps) => {
         {cardsSet.map((card, index) => {
           const indexer = index + 1;
           if (
-            cardOpened === card.id ||
-            cardMatch === card.id ||
+            (cardOpened && cardOpened.id === card.id) ||
+            (cardMatch && cardMatch.id === card.id) ||
             cardsMatched.includes(card.name) ||
             spyMode
           ) {

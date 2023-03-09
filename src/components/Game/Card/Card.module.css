@@ -13,7 +13,8 @@
     text-align: center;
     font-family: Verdana, Geneva, Tahoma, sans-serif;
     cursor: pointer;
-    border: 5px dashed rgb(0, 204, 255);
+    border: 5px dashed yellow;
+    box-shadow: 3px 3px gainsboro;
 }
 
 .Card span {

@@ -4,8 +4,8 @@ import styles from "./Card.module.css";
 type Props = {
   indexer: number;
   card: any;
-  cardOpened: number;
-  cardMatch: number;
+  cardOpened: any;
+  cardMatch: any;
   cardsMatched: any[];
   cardShake: boolean;
   playCardHandler: (e: any, card: any) => void;
