@@ -1,15 +1,16 @@
-import { FC, useState } from "react";
+import { FC } from "react";
 import styles from "./Card.module.css";
+import CardType from "../../../types/Card";
 
 type Props = {
   indexer: number;
-  card: any;
-  cardOpened: any;
-  cardMatch: any;
-  cardsMatched: any[];
+  card: CardType;
+  cardOpened: CardType | undefined;
+  cardMatch: CardType | undefined;
+  cardsMatched: string[];
   cardShake: boolean;
-  playCardHandler: (e: any, card: any) => void;
-  openCardHandler: (e: any, card: any) => void;
+  playCardHandler: (e: any, card: CardType) => void;
+  openCardHandler: (e: any, card: CardType) => void;
 };
 
 const Card: FC<Props> = (props: Props) => {
@@ -28,13 +29,15 @@ const Card: FC<Props> = (props: Props) => {
   if (!cardOpened && !cardMatch) {
     cardStyles += " " + styles.Clickable;
   }
-
   if (cardShake) {
     cardStyles += " " + styles.Shake;
   }
-
-  if (cardOpened === card.id || cardMatch === card.id)
+  if (
+    (cardOpened && cardOpened.id === card.id) ||
+    (cardMatch && cardMatch.id === card.id)
+  ) {
     cardStyles += " " + styles.Opened;
+  }
   if (cardsMatched.includes(card.name)) cardStyles += " " + styles.Matched;
 
   return (

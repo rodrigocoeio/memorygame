@@ -3,17 +3,9 @@ import Controls from "./Controls/Controls";
 import Finished from "./Finished/Finished";
 import Cover from "./Card/Cover";
 import Card from "./Card/Card";
+import CardType from "../../types/Card";
 import styles from "./Game.module.css";
 import playAudio from "../../utils/playAudio";
-
-type CardType = {
-  id: number;
-  name: string;
-  category: string;
-  audio: string;
-  image: string;
-  match: number;
-};
 
 type GameProps = {
   cardsSet: CardType[];
@@ -38,10 +30,9 @@ const playFinished = () => {
   playAudio("/sounds/finished.mp3");
 };
 
-const Game: FC<GameProps> = (props: GameProps) => {
+const Game: FC<GameProps> = (props) => {
   const { cardsSet, difficulty, onStartGame, onQuitGame } = props;
   const [cardsMatched, setCardsMatched] = useState<string[]>([]);
-  const [cardOpenedName, setCardOpenedName] = useState("");
   const [cardOpened, setCardOpened] = useState<CardType | undefined>();
   const [cardMatch, setCardMatch] = useState<CardType | undefined>();
   const [cardShake, setCardShake] = useState(false);
