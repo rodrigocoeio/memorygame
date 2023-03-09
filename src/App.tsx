@@ -3,15 +3,17 @@ import Welcome from "./components/Welcome/Welcome";
 import Game from "./components/Game/Game";
 import { useEffect, useState } from "react";
 import loadCardsSet from "./utils/loadCardsSet";
+import CardType from "./types/Card";
+import CategoryType from "./types/Category";
 
 type DIFFICULTY = "EASY" | "NORMAL" | "HARD";
 
 function App() {
   const [started, setStarted] = useState(false);
   const [difficulty, setDifficulty] = useState<DIFFICULTY>("NORMAL");
-  const [categories, setCategories] = useState<any[]>([]);
+  const [categories, setCategories] = useState<CategoryType[]>([]);
   const [category, setCategory] = useState("");
-  const [cardsSet, setCardsSet] = useState([]);
+  const [cardsSet, setCardsSet] = useState<CardType[]>([]);
   const [pleaseSelectCategory, setPleaseSelectCategory] = useState(false);
 
   useEffect(() => {
@@ -19,7 +21,7 @@ function App() {
       const fetchJson = await fetch("/categories.json");
       const categoriesJson = await fetchJson.json();
 
-      let categories: any[] = [];
+      let categories: CategoryType[] = [];
 
       for (const i in categoriesJson) {
         categories.push(categoriesJson[i]);
@@ -32,11 +34,16 @@ function App() {
   }, []);
 
   const startGameHandler = () => {
-    const categoryObj: any = categories.find((cat) => cat.name === category);
+    const categoryObj: CategoryType | undefined = categories.find(
+      (cat) => cat.name === category
+    );
 
     if (categoryObj) {
       const cardsNumber: any = { EASY: 9, NORMAL: 15, HARD: 25 };
-      const cardsSet: any = loadCardsSet(categoryObj, cardsNumber[difficulty]);
+      const cardsSet: CardType[] = loadCardsSet(
+        categoryObj,
+        cardsNumber[difficulty]
+      );
 
       setCardsSet(cardsSet);
       setStarted(true);

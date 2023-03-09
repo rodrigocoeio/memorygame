@@ -4,7 +4,6 @@ type CardType = {
   category: string;
   audio: string;
   image: string;
-  match: number;
 };
 
 export default CardType;

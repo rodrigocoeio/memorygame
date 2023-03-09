@@ -1,11 +1,12 @@
-import { FC, useState } from "react";
+import { FC } from "react";
 import styles from "./Welcome.module.css";
+import CategoryType from "../../types/Category";
 
 type DIFFICULTY = "EASY" | "NORMAL" | "HARD";
 
 type WelcomeProps = {
   difficulty: string;
-  categories: any[];
+  categories: CategoryType[];
   category: string;
   pleaseSelectCategory: boolean;
   onStartGame: () => void;
@@ -44,7 +45,11 @@ const Welcome: FC<WelcomeProps> = (props: WelcomeProps) => {
             <option value="HARD">Hard</option>
           </select>
 
-          <select value={props.category} className={props.pleaseSelectCategory ? styles.PleaseSelect : ""} onChange={selectCategoryHandler}>
+          <select
+            value={props.category}
+            className={props.pleaseSelectCategory ? styles.PleaseSelect : ""}
+            onChange={selectCategoryHandler}
+          >
             <option value="" disabled>
               Choose a category
             </option>
