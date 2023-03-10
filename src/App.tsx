@@ -18,7 +18,7 @@ function App() {
 
   useEffect(() => {
     const loadCategories = async () => {
-      const fetchJson = await fetch("/categories.json");
+      const fetchJson = await fetch("/cards/categories.json");
       const categoriesJson = await fetchJson.json();
 
       let categories: CategoryType[] = [];

@@ -1,4 +1,6 @@
-/public/categories.json
+/public/cards
+/cards
+
 # Logs
 logs
 *.log
