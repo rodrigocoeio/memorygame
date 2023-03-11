@@ -1,28 +1,18 @@
-import { FC } from "react";
+import { FC, useContext } from "react";
 import styles from "./Card.module.css";
 import CardType from "../../../types/Card";
+import { CardContext } from "../../../providers/CardProvider";
 
 type Props = {
   indexer: number;
   card: CardType;
-  cardOpened: CardType | undefined;
-  cardMatch: CardType | undefined;
-  cardsMatched: string[];
-  cardShake: boolean;
-  playCardHandler: (e: any, card: CardType) => void;
-  openCardHandler: (e: any, card: CardType) => void;
 };
 
 const Card: FC<Props> = (props: Props) => {
-  const {
-    indexer,
-    card,
-    cardOpened,
-    cardMatch,
-    cardsMatched,
-    cardShake,
-    playCardHandler,
-  } = props;
+  const { indexer, card } = props;
+  const cardContext = useContext(CardContext);
+  const { cardOpened, cardMatch, cardShake, cardsMatched, handlers } =
+    cardContext;
 
   let cardStyles = styles.Card;
 
@@ -47,7 +37,7 @@ const Card: FC<Props> = (props: Props) => {
       style={{
         backgroundImage: `url("/cards/${card.category}/${card.image}")`,
       }}
-      onClick={(e) => playCardHandler(e, card)}
+      onClick={(e) => handlers.playCardHandler(e, card)}
     >
       <span>{card.name}</span>
     </div>

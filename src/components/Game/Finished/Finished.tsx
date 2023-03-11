@@ -1,12 +1,11 @@
-import { FC } from "react";
+import { FC, useContext } from "react";
+import { CardContext } from "../../../providers/CardProvider";
 import styles from "./Finished.module.css";
 
-type Props = {
-    onNewGameHandler: () => void;
-    onClose: () => void;
-}
+const Finished: FC = () => {
+  const cardContext = useContext(CardContext);
+  const { handlers } = cardContext;
 
-const Finished: FC<Props> = (props:Props) => {
   return (
     <div className={styles.Finished}>
       <img src="/images/congrats.png"></img>
@@ -15,11 +14,8 @@ const Finished: FC<Props> = (props:Props) => {
       <br />
       Wanna play more?!
       <br />
-      <button onClick={props.onNewGameHandler}>Yes!</button>
-      <button
-        onClick={props.onClose}
-        style={{ opacity: 0.5 }}
-      >
+      <button onClick={handlers.newGameHandler}>Yes!</button>
+      <button onClick={handlers.keepPlayingHandler} style={{ opacity: 0.5 }}>
         No!
       </button>
     </div>

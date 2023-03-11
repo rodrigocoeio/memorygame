@@ -1,30 +1,19 @@
-import { FC } from "react";
+import { FC, useContext } from "react";
 import styles from "./Welcome.module.css";
-import CategoryType from "../../types/Category";
+import { GameContext } from "../../providers/GameProvider";
 
 type DIFFICULTY = "EASY" | "NORMAL" | "HARD";
 
-type WelcomeProps = {
-  difficulty: string;
-  categories: CategoryType[];
-  category: string;
-  pleaseSelectCategory: boolean;
-  onStartGame: () => void;
-  onSelectDifficulty: (difficulty: DIFFICULTY) => void;
-  onSelectCategory: (category: string) => void;
-};
+const Welcome: FC = () => {
+  const gameContext = useContext(GameContext);
+  const { difficulty, category, categories, pleaseSelectCategory, handlers } =
+    gameContext;
 
-const Welcome: FC<WelcomeProps> = (props: WelcomeProps) => {
-  const categories = props.categories;
-
-  const startGameHandler = () => {
-    props.onStartGame();
-  };
   const selectDifficultyHandler = (event: any) => {
-    props.onSelectDifficulty(event.target.value);
+    handlers.selectDifficultyHandler(event.target.value);
   };
   const selectCategoryHandler = (event: any) => {
-    props.onSelectCategory(event.target.value);
+    handlers.selectCategoryHandler(event.target.value);
   };
 
   return (
@@ -36,7 +25,7 @@ const Welcome: FC<WelcomeProps> = (props: WelcomeProps) => {
         </div>
 
         <div className={styles.Controls}>
-          <select value={props.difficulty} onChange={selectDifficultyHandler}>
+          <select value={difficulty} onChange={selectDifficultyHandler}>
             <option value="" disabled>
               Choose a difficulty
             </option>
@@ -46,8 +35,8 @@ const Welcome: FC<WelcomeProps> = (props: WelcomeProps) => {
           </select>
 
           <select
-            value={props.category}
-            className={props.pleaseSelectCategory ? styles.PleaseSelect : ""}
+            value={category}
+            className={pleaseSelectCategory ? styles.PleaseSelect : ""}
             onChange={selectCategoryHandler}
           >
             <option value="" disabled>
@@ -61,7 +50,10 @@ const Welcome: FC<WelcomeProps> = (props: WelcomeProps) => {
             ))}
           </select>
 
-          <button onClick={startGameHandler} className={styles.StartGame}>
+          <button
+            onClick={handlers.startGameHandler}
+            className={styles.StartGame}
+          >
             Start Game
           </button>
         </div>

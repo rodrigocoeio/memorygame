@@ -1,29 +1,32 @@
-import { FC } from "react";
+import { FC, useContext } from "react";
 import styles from "./Controls.module.css";
 import eyeSvg from "../../../assets/eye.svg";
 import eyeSlashSvg from "../../../assets/eye-slash.svg";
 import quitGameSvg from "../../../assets/close.svg";
+import { GameContext } from "../../../providers/GameProvider";
+import { CardContext } from "../../../providers/CardProvider";
 
-type Props = {
-  cardOpened: any;
-  cardsMatched: any[];
-  spyMode: boolean;
-  onNewGame: () => void;
-  onSpy: () => void;
-  onQuitGame: () => void;
-};
+const Component: FC = () => {
+  const gameContext = useContext(GameContext);
+  const cardContext = useContext(CardContext);
+  const { handlers: gameHandlers } = gameContext;
+  const { cardOpened, cardsMatched, spyMode, clearState, handlers } =
+    cardContext;
 
-const Component: FC<Props> = (props: Props) => {
-  const { cardOpened, cardsMatched, spyMode, onNewGame, onSpy, onQuitGame } = props;
+  const quitGameHandler = () => {
+    clearState();
+    gameHandlers.quitGameHandler();
+  };
+
   return (
     <div className={styles.Controls}>
-      <button onClick={onNewGame} className={styles.NewGame}>
+      <button onClick={handlers.newGameHandler} className={styles.NewGame}>
         New Game&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
       </button>
       {cardsMatched.length === 0 && (
         <button
-          disabled={cardOpened}
-          onClick={onSpy}
+          disabled={cardOpened ? true : false}
+          onClick={handlers.spyHandler}
           className={styles.SpyButton}
           title="Spy"
         >
@@ -31,7 +34,7 @@ const Component: FC<Props> = (props: Props) => {
         </button>
       )}
       <button
-        onClick={onQuitGame}
+        onClick={quitGameHandler}
         className={styles.QuitGame}
         title="Quit Game"
       >

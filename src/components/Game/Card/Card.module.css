@@ -20,7 +20,7 @@
 .Card span {
     position: absolute;
     display: block;
-    max-width: 200px;
+    max-width: 270px;
     text-shadow: black 3px 1px 1px;
     -webkit-text-stroke: 1px black;
 }

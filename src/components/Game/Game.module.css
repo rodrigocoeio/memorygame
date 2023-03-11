@@ -31,7 +31,5 @@
     grid-template-columns: repeat(5, 1fr);
     gap: 5px;
     grid-auto-rows: auto;
-    font-size: 28px;
+    font-size: 24px;
 }
-
-
