@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "node readcards.cjs && vite",
     "build": "node readcards.cjs && tsc && vite build",
-    "build-cards": "cp -r cards dist/cards && node readcards.js",
+    "build-cards": "cp -r cards dist/cards && node readcards.cjs",
     "readcards": "node readcards.cjs",
     "preview": "vite preview"
   },
